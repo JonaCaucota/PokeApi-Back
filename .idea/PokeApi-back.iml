@@ -8,5 +8,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@types/mongoose-aggregate-paginate-v2" level="application" />
+    <orderEntry type="library" name="@types/bcryptjs" level="application" />
+    <orderEntry type="library" name="@types/mongoose-auto-increment" level="application" />
+    <orderEntry type="library" name="@types/mongoose-simple-random" level="application" />
   </component>
 </module>
