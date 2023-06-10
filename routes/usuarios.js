@@ -9,31 +9,37 @@ const { usuariosGet,
 const {check} = require("express-validator");
 const {validarCampos} = require("../middlewares/validar-campos");
 const Role = require('../models/role');
+const {esRoleValido, existeEmail, existeUsuarioPorId} = require("../helpers/db-validators");
 
 const router = Router();
 
 
 router.get('/', usuariosGet );
 
-router.put('/:id', usuariosPut );
+router.put('/:id',[
+    check('id', 'No es un ID valido').isMongoId(),
+    check('id').custom(existeUsuarioPorId),
+    check('rol').custom(esRoleValido),
+    validarCampos
+] ,usuariosPut );
 
 router.post('/',[
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('password', 'El password es obligatorio').isLength({min: 6}),
         //check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
         check('correo', 'El correo no es válido').isEmail(),
-        check('rol').custom(async (rol = '') => {
-            const existeRol = await Role.findOne({rol})
-            if (!existeRol) {
-                throw new Error(`El rol ${rol} no está registrado en la base de datos`)
-            }
-        }),
+        check('correo').custom(existeEmail),
+        check('rol').custom(esRoleValido),
         validarCampos],
     usuariosPost );
 
-router.delete('/', usuariosDelete );
+router.delete('/:id', usuariosDelete );
 
-router.patch('/', usuariosPatch );
+router.patch('/',[
+    check('id', 'No es un ID valido').isMongoId(),
+    check('id').custom(existeUsuarioPorId),
+    validarCampos],
+    usuariosPatch );
 
 
 
