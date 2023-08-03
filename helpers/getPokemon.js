@@ -10,7 +10,7 @@ const getPokemon = async (id) => {
         const attack = data.stats[1].base_stat;
         const defense = data.stats[2].base_stat;
         const speed = data.stats[5].base_stat;
-        const image = data.sprites.other.home.front_default;
+        const image = data.sprites.other.dream_world.front_default;
         const types = data.types.map(t => t.type.name);
         return new Pokemon({id, name, image, hp, types, attack, defense, speed, height, weight});
 

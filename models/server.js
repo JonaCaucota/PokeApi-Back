@@ -28,7 +28,10 @@ class Server {
     middlewares() {
 
         // CORS
-        this.app.use( cors() );
+        this.app.use( cors({
+            origin: 'http://localhost:3000',
+            optionsSuccessStatus: 200
+        }) );
 
         // Lectura y parseo del body
         this.app.use( express.json() );
