@@ -2,34 +2,48 @@ const {Schema, model} = require('mongoose');
 
 const PokemonSchema = Schema({
     id: {
-        type: String,
-        required: [true, 'El nombre es obligatorio']
+        type: Number,
     },
-    correo: {
+    name: {
         type: String,
-        required: [true, 'El correo es obligatorio'],
         unique: true
     },
-    password: {
-        type: String,
-        required: [true, 'La contraseña es obligatoria'],
-    },
-    img: {
+    image: {
         type: String,
     },
-    rol: {
-        type: String,
+    hp: {
+        type: Number,
         required: [true],
-        emun: ['ADMIN_ROLE', 'USER_ROLE']
     },
-    estado: {
-        type: Boolean,
+    types: {
+        type: Array,
+    },
+    attack: {
+        type: Number,
         default: true
     },
-    google: {
-        type: Boolean,
+    defense: {
+        type: Number,
+        default: false
+    },
+    speed: {
+        type: Number,
+        default: false
+    },
+    height: {
+        type: Number,
+        default: false
+    },
+    weight: {
+        type: Number,
         default: false
     }
 })
+
+PokemonSchema.methods.toJSON = function () {
+    const {password,__v, _id, uid,
+        ...usuario} = this.toObject();
+    return usuario;
+}
 
 module.exports = model('Pokemon', PokemonSchema);
