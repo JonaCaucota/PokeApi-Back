@@ -37,6 +37,9 @@ const PokemonSchema = Schema({
     weight: {
         type: Number,
         default: false
+    },
+    description: {
+        type: String
     }
 })
 
