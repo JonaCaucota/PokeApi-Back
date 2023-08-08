@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 const Pokemon = require('../models/pokemon/pokemon');
-const getPokemon = async (id) => {
+const getPokemonByID = async (id) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
     const descriptionURL = `https://pokeapi.co/api/v2/pokemon-species/${id}/`
     try {
@@ -23,5 +23,5 @@ const getPokemon = async (id) => {
 }
 
 module.exports = {
-    getPokemon
+    getPokemon: getPokemonByID
 }
