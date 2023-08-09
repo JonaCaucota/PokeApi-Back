@@ -22,11 +22,10 @@ router.put('/:id',[
 ] ,usuariosPut );
 
 router.post('/',[
-        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('name', 'El nombre es obligatorio').not().isEmpty(),
         check('password', 'El password es obligatorio').isLength({min: 6}),
-        //check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
-        check('correo', 'El correo no es válido').isEmail(),
-        check('correo').custom(existeEmail),
+        check('email', 'El email no es válido').isEmail(),
+        check('email').custom(existeEmail),
         check('rol').custom(esRoleValido),
         validarCampos],
     usuariosPost );

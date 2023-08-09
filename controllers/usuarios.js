@@ -6,7 +6,6 @@ const {validationResult} = require("express-validator");
 
 const usuariosGet = async (req = request, res = response) => {
 
-    // const { q, nombre = 'No name', apikey, page = 1, limit } = req.query;
     const {limite, desde} = req.query;
     const query = {estado: true}
 
@@ -23,31 +22,37 @@ const usuariosGet = async (req = request, res = response) => {
     });
 }
 
-const usuariosPost = async(req, res = response) => {
+const usuariosPost = async (req, res = response) => {
+    try {
+        const { name, lastName, email, password, rol } = req.body;
 
-    const {nombre, correo, password, rol} = req.body;
-    const usuario = new Usuario({
-        nombre, correo, password, rol
-    });
+        // Encriptar contraseña
+        const salt = bcryptjs.genSaltSync();
+        const encryptedPassword = bcryptjs.hashSync(password, salt);
 
-    //Encriptar contraseña
-    const salt = bcryptjs.genSaltSync();
-    usuario.password = bcryptjs.hashSync(password, salt);
+        const user = new Usuario({
+            name, lastName, email, password: encryptedPassword, rol
+        });
 
-    //Guardo usuario
-    usuario.save();
+        // Guardo usuario
+        await user.save();
 
-    res.json({
-        usuario
-    });
+        res.json({
+            user
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Error al crear usuario'
+        });
+    }
 }
 
 const usuariosPut = async(req, res = response) => {
 
     const { id } = req.params;
-    const {_id, password, google, correo, ...resto} = req.body;
+    const {_id, password, google, email, ...resto} = req.body;
 
-    // TODO validar contra base de datos
     if (password) {
         const salt = bcryptjs.genSaltSync();
         resto.password = bcryptjs.hashSync(password, salt);

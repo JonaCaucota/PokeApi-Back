@@ -2,16 +2,18 @@ const Role = require("../models/user/role");
 const Usuario = require("../models/user/usuario");
 
 const esRoleValido = async (rol = '') => {
-    const existeRol = await Role.findOne({rol})
-    if (!existeRol) {
-        throw new Error(`El rol ${rol} no está registrado en la base de datos`)
+    if(rol === undefined) {
+        const existeRol = await Role.findOne({rol})
+        if (!existeRol) {
+            throw new Error(`El rol ${rol} no está registrado en la base de datos`)
+        }
     }
 }
 
-const existeEmail = async(correo = '') => {
-    const existeEmail = await Usuario.findOne({correo});
+const existeEmail = async(email = '') => {
+    const existeEmail = await Usuario.findOne({email});
     if(existeEmail){
-        throw new Error(`El correo: ${correo}, ya está registrado`)
+        throw new Error(`El email: ${email}, ya está registrado`)
     }
 }
 
