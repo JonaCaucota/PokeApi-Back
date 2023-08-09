@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const {getPokemon} = require("../helpers/getPokemonByID");
 
 const pokemonGetAll = async (req = request, res = response) => {
-    const limit = 60;
+    const limit = 151;
     try {
         const pokemonPromises = [];
         for (let i = 1; i <= limit; i++) {
@@ -31,7 +31,7 @@ const pokemonGetById = async (req = request, res = response) => {
 
 const pokemonSearch = async (req = request, res = response) => {
     const {search} = req.query;
-    const url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=200';
+    const url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151';
     try{
         const data = await fetch(url);
         const {results} = await data.json();
