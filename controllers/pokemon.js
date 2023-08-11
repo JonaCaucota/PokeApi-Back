@@ -2,7 +2,6 @@ const { response, request } = require('express');
 const fetch = require('node-fetch');
 const {getPokemon} = require("../helpers/getPokemonByID");
 const PokemonFav = require('../models/pokemon/pokemonFav');
-const Usuario = require("../models/user/usuario");
 
 const pokemonGetAll = async (req = request, res = response) => {
     const limit = 151;
@@ -89,12 +88,29 @@ const saveFavPokemon = async (req = request, res = response) => {
             message: 'Error al guardar el pokemon favorito'
         });
     }
+}
 
+const getAllFavouritePokemonsByUserId = async (req = request, res = response) => {
+    try{
+        const userId = req.params.id;
+        const user = await PokemonFav.findById(userId.toString());
+        if(user !== null){
+            return res.json(
+                user.pokemons
+            )
+        }
+    }catch (error){
+        console.log(error)
+        res.status(500).json({
+            message: 'Error al guardar el pokemon favorito'
+        });
+    }
 }
 
 module.exports = {
     pokemonGetAll,
     pokemonGetById,
     pokemonSearch,
-    saveFavPokemon
+    saveFavPokemon,
+    getAllFavouritePokemonsByUserId
 };
