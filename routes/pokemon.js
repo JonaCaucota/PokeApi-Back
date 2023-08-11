@@ -1,11 +1,12 @@
 const { Router } = require('express');
-const {pokemonGetAll, pokemonGetById, pokemonSearch} = require("../controllers/pokemon");
+const {pokemonGetAll, pokemonGetById, pokemonSearch, saveFavPokemon} = require("../controllers/pokemon");
 
 
 const router = Router();
 
 router.get('/', pokemonGetAll );
-router.get('/search', pokemonSearch)
+router.get('/search', pokemonSearch);
+router.post('/favourite/save', saveFavPokemon);
 router.get('/:id', pokemonGetById );
 
 

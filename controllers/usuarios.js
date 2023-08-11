@@ -7,7 +7,7 @@ const {validationResult} = require("express-validator");
 const usuariosGet = async (req = request, res = response) => {
 
     const {limite, desde} = req.query;
-    const query = {estado: true}
+    const query = {state: true}
 
     const [usuarios,total ] = await  Promise.all([
         Usuario.find(query)

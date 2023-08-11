@@ -1,6 +1,8 @@
 const { response, request } = require('express');
 const fetch = require('node-fetch');
 const {getPokemon} = require("../helpers/getPokemonByID");
+const PokemonFav = require('../models/pokemon/pokemonFav');
+const Usuario = require("../models/user/usuario");
 
 const pokemonGetAll = async (req = request, res = response) => {
     const limit = 151;
@@ -52,8 +54,47 @@ const pokemonSearch = async (req = request, res = response) => {
 
 }
 
+const saveFavPokemon = async (req = request, res = response) => {
+    const {userId, pokemon} = req.body;
+    try{
+        const user = await PokemonFav.findById(userId);
+        if(user !== null){
+            for (const poke of user.pokemons) {
+                if(poke.id == pokemon.id ){
+                    console.log("Error pokemon ya existente en favoritos")
+                    return res.status(500).json({
+                        Error: "Ya tiene este pokemon en favoritos"
+                    })
+                }
+            }
+            user.pokemons.push(pokemon);
+            const userUpdated = await PokemonFav.findByIdAndUpdate(userId, user, { new: true });
+            return res.json({
+                userUpdated
+            })
+        }
+        const favPokemon = new PokemonFav({
+            _id: userId,
+            pokemons: pokemon
+        });
+
+        await favPokemon.save();
+
+        res.json({
+            favPokemon
+        })
+    }catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Error al guardar el pokemon favorito'
+        });
+    }
+
+}
+
 module.exports = {
     pokemonGetAll,
     pokemonGetById,
-    pokemonSearch
+    pokemonSearch,
+    saveFavPokemon
 };
